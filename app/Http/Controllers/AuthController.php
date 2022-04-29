@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use JWTAuth;
 
 class AuthController extends Controller
 {
@@ -26,8 +27,9 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Unauthorized',
+                /*'status' => 'error',
+                'message' => 'Unauthorized',*/
+                'error' => 'Unauthorized. Either email or password is wrong.',
             ], 401);
         }
 
@@ -45,7 +47,7 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
@@ -59,13 +61,10 @@ class AuthController extends Controller
 
         $token = Auth::login($user);
         return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
             'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ],
         ]);
     }
 
@@ -73,28 +72,35 @@ class AuthController extends Controller
     {
         Auth::logout();
         return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
+            /*'status' => 'success',
+            'message' => 'Successfully logged out',*/
+            'message' => 'User successfully signed out',
         ]);
     }
 
     public function me()
     {
         return response()->json([
-            'status' => 'success',
-            'user' => Auth::user(),
+            /*'status' => 'success',
+            'user' => Auth::user(),*/
+            Auth::user(),
         ]);
     }
 
     public function refresh()
     {
+        $user = Auth::user();
         return response()->json([
-            'status' => 'success',
+            /*'status' => 'success',
             'user' => Auth::user(),
             'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ],
+            'token' => Auth::refresh(),
+            'type' => 'bearer',
+            ],*/
+            'access_token' => Auth::refresh(),
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => $user,
         ]);
     }
 
