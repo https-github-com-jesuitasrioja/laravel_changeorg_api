@@ -34,12 +34,9 @@ class AuthController extends Controller
      *    response=200,
      *    description="Good credentials response",
      *    @OA\JsonContent(
-     *       @OA\Property(property="status", type="string", example="success")
-     *        ),
-     *       @OA\Property(property="user", type="user", example="Unauthorized. Either email or password is wrong.")
-     *        ),
-     *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
-     *        )
+     *       @OA\Property(property="status", type="string", example="success"),
+     *       @OA\Property(property="user", type="user", example="Unauthorized. Either email or password is wrong."),
+     *       @OA\Property(property="authorization", type="authorization", example="Unauthorized. Either email or password is wrong.")
      *     )
      * ),
      * @OA\Response(
@@ -73,7 +70,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => 'success',
             'user' => $user,
-            'authorisation' => [
+            'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
             ],
