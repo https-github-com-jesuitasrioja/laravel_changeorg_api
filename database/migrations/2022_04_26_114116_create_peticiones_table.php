@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('peticiones', function (Blueprint $table) {
-            $table->id()->first();
+            $table->id();
             $table->string('titulo', 255);
             $table->text('descripcion');
             $table->text('destinatario');
