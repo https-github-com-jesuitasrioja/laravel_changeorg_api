@@ -34,7 +34,7 @@ class AuthController extends Controller
      *    response=200,
      *    description="Good credentials response",
      *    @OA\JsonContent(
-     *       @OA\Property(property="status", type="string", example="success"),
+     *       @OA\Property(property="status", type="string", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
      *       @OA\Property(property="user", type="user", example="Unauthorized. Either email or password is wrong."),
      *       @OA\Property(property="authorization", type="authorization", example="Unauthorized. Either email or password is wrong.")
      *     )
