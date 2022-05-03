@@ -8,11 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * @OA\Info(title="API Peticiones", version="1.0")
- *
- * @OA\Server(url="https://laravel-changeorg-api.herokuapp.com/")
- */
 class PeticionesController extends Controller
 {
 
@@ -22,17 +17,24 @@ class PeticionesController extends Controller
     }
     /**
      * @OA\Get(
-     *     path="/api/peticiones",
-     *     summary="Mostrar peticiones",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Mostrar todas las peticiones."
-     *     ),
-     *     @OA\Response(
-     *         response="default",
-     *         description="Ha ocurrido un error."
+     *      path="/api/peticiones",
+     *      tags={"Peticiones"},
+     *      summary="Get list of peticiones",
+     *      description="Returns list of petiiones",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#Peticiones")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
      *     )
-     * )
      */
     public function index(Request $request)
     {
@@ -44,19 +46,25 @@ class PeticionesController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/mispeticiones",
-     *     summary="Mostrar las peticiones subidas por el usuario logueado",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Mostrar todas las peticiones."
-     *     ),
-     *     @OA\Response(
-     *         response="default",
-     *         description="Ha ocurrido un error."
+     *      path="/api/mispeticiones/",
+     *      tags={"Peticiones"},
+     *      summary="Get list of peticiones of the logged in user",
+     *      description="Returns list of peticiones of the logged in user",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#Peticiones")
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
      *     )
-     * )
      */
-
     public function listMine(Request $request)
     {
         // parent::index()
@@ -70,9 +78,18 @@ class PeticionesController extends Controller
      * @OA\Get(
      *     path="/api/peticiones/{id}",
      *     summary="Muestra el detalle de una petición",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Peticione id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
      *     @OA\Response(
      *         response=200,
-     *         description="Mostrar todas las peticiones."
+     *         description="Mostrar la petición."
      *     ),
      *     @OA\Response(
      *         response="default",
@@ -102,6 +119,49 @@ $peticion = Peticione::findOrFail($id);
 return view('peticiones.edit-add', compact('peticion'));
 
 }*/
+/**
+ * @OA\Put(
+ *      path="/api/peticiones/{id}",
+ *      tags={"Peticiones"},
+ *      summary="Update existing peticione",
+ *      description="Returns updated peticione data",
+ *      @OA\Parameter(
+ *          name="id",
+ *          description="Peticione id",
+ *          required=true,
+ *          in="path",
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
+ *      ),
+ *      @OA\RequestBody(
+ *          required=true,
+ *          @OA\JsonContent(
+ *              ref="#Peticione")
+ *      ),
+ *      @OA\Response(
+ *          response=201,
+ *          description="Successful operation",
+ *          @OA\JsonContent(ref="#Peticione")
+ *       ),
+ *      @OA\Response(
+ *          response=400,
+ *          description="Bad Request"
+ *      ),
+ *      @OA\Response(
+ *          response=401,
+ *          description="Unauthenticated",
+ *      ),
+ *      @OA\Response(
+ *          response=403,
+ *          description="Forbidden"
+ *      ),
+ *      @OA\Response(
+ *          response=404,
+ *          description="Resource Not Found"
+ *      )
+ * )
+ */
 
     public function update(Request $request, $id)
     {

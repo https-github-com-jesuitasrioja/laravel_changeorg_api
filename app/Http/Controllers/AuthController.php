@@ -15,6 +15,43 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/login",
+     * summary="Sign in",
+     * description="Login by email, password",
+     * tags={"auth"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Pass user credentials",
+     *    @OA\JsonContent(
+     *       required={"email","password"},
+     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Good credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="string", example="success")
+     *        ),
+     *       @OA\Property(property="user", type="user", example="Unauthorized. Either email or password is wrong.")
+     *        ),
+     *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
+     *        )
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
+     *        )
+     *     )
+     * )
+     */
+
     public function login(Request $request)
     {
         $request->validate([
