@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use JWTAuth;
 
 class AuthController extends Controller
 {
@@ -63,7 +62,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            // 'expires_in' => auth('api')->factory()->getTTL() * 60,
             'user' => $user,
         ]);
     }
@@ -99,7 +98,7 @@ class AuthController extends Controller
             ],*/
             'access_token' => Auth::refresh(),
             'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            //   'expires_in' => JWTAuth::factory()->getTTL() * 60,
             'user' => $user,
         ]);
     }
