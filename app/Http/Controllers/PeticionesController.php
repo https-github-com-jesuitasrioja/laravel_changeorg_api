@@ -70,7 +70,7 @@ return view('peticiones.edit-add', compact('peticion'));
         $res = $peticion->update($request->all());
 
         if ($res) {
-            return response()->json(['message' => 'Peticion actualizada satisfactioriamente'], 201);
+            return response()->json(['message' => 'Peticion actualizada satisfactioriamente', 'peticion' => $peticion], 201);
         }
         return response()->json(['message' => 'Error actualizando la peticion'], 500);
 
@@ -162,7 +162,13 @@ return view('peticiones.edit-add', compact('peticion'));
     public function destroy(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);
-        $peticion->delete();
-        return $peticion;
+        $res = $peticion->delete();
+
+        if ($res) {
+            return response()->json(['message' => 'Peticion eliminada satisfactioriamente'], 201);
+        }
+        return response()->json(['message' => 'Error eliminando la peticion'], 500);
+
+        // return $peticion;
     }
 }
