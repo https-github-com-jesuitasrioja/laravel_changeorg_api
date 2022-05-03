@@ -18,7 +18,7 @@
         "/api/login": {
             "post": {
                 "tags": [
-                    "auth"
+                    "Authentication"
                 ],
                 "summary": "Sign in",
                 "description": "Login by email, password",
@@ -206,6 +206,9 @@
         },
         "/api/users/firmas": {
             "get": {
+                "tags": [
+                    "Users"
+                ],
                 "summary": "Mostrar peticiones firmadas por el usuario logueado",
                 "operationId": "80dbcadf913999ea1ada57c555d17f36",
                 "responses": {

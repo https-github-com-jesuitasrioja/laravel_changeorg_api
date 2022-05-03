@@ -20,7 +20,7 @@ class AuthController extends Controller
      * path="/api/login",
      * summary="Sign in",
      * description="Login by email, password",
-     * tags={"auth"},
+     * tags={"Authentication"},
      * @OA\RequestBody(
      *    required=true,
      *    description="Pass user credentials",

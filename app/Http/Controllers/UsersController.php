@@ -11,6 +11,7 @@ class UsersController extends Controller
     /**
      * @OA\Get(
      *     path="/api/users/firmas",
+     *     tags={"Users"},
      *     summary="Mostrar peticiones firmadas por el usuario logueado",
      *     @OA\Response(
      *         response=200,
