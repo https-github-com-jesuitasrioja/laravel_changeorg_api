@@ -8,6 +8,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @OA\Info(title="API Peticiones", version="1.0")
+ *
+ * @OA\Server(url="https://laravel-changeorg-api.herokuapp.com/")
+ */
 class PeticionesController extends Controller
 {
 
@@ -17,12 +22,18 @@ class PeticionesController extends Controller
     }
     /**
      * @OA\Get(
-     *     path="/peticiones/",
-     *     description="List of Peticiones",
-     *     @OA\Response(response="default", description="Welcome page")
+     *     path="/api/peticiones",
+     *     summary="Mostrar peticiones",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mostrar todas las peticiones."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
      * )
      */
-
     public function index(Request $request)
     {
 
@@ -30,6 +41,21 @@ class PeticionesController extends Controller
 
         return $peticiones;
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/mispeticiones",
+     *     summary="Mostrar las peticiones subidas por el usuario logueado",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mostrar todas las peticiones."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
 
     public function listMine(Request $request)
     {
@@ -40,6 +66,20 @@ class PeticionesController extends Controller
         return $peticiones;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/peticiones/{id}",
+     *     summary="Muestra el detalle de una petición",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mostrar todas las peticiones."
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * )
+     */
     public function show(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);

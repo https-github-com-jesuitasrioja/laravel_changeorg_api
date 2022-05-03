@@ -1,0 +1,56 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Peticiones",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://laravel-changeorg-api.herokuapp.com/"
+        }
+    ],
+    "paths": {
+        "/api/peticiones": {
+            "get": {
+                "summary": "Mostrar peticiones",
+                "operationId": "b91666912c965c676b40d2d7d767954b",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todas las peticiones."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/mispeticiones": {
+            "get": {
+                "summary": "Mostrar las peticiones subidas por el usuario logueado",
+                "operationId": "c324563a28ebe3e9a2c2cce19c313e94",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todas las peticiones."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/peticiones/{id}": {
+            "get": {
+                "summary": "Muestra el detalle de una petición",
+                "operationId": "2c711e8f3241fad7fb3766afc631b04e",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todas las peticiones."
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        }
+    }
+}
