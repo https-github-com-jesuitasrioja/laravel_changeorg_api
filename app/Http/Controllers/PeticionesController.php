@@ -77,6 +77,7 @@ class PeticionesController extends Controller
     /**
      * @OA\Get(
      *     path="/api/peticiones/{id}",
+     *     tags={"Peticiones"},
      *     summary="Muestra el detalle de una petición",
      *     @OA\Parameter(
      *          name="id",

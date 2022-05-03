@@ -21,12 +21,6 @@ use Illuminate\Routing\Controller as BaseController;
  *      url="https://laravel-changeorg-api.herokuapp.com/",
  *      description="API Server"
  * )
-
- *
- * @OA\Tag(
- *     name="ChangeOrg API",
- *     description="API Endpoints"
- * )
  */
 class Controller extends BaseController
 {

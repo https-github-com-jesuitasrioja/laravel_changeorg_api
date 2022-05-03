@@ -128,6 +128,9 @@
         },
         "/api/peticiones/{id}": {
             "get": {
+                "tags": [
+                    "Peticiones"
+                ],
                 "summary": "Muestra el detalle de una petición",
                 "operationId": "2c711e8f3241fad7fb3766afc631b04e",
                 "parameters": [
@@ -241,11 +244,5 @@
                 }
             }
         }
-    },
-    "tags": [
-        {
-            "name": "ChangeOrg API",
-            "description": "API Endpoints"
-        }
-    ]
+    }
 }
