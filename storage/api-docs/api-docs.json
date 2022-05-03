@@ -60,6 +60,30 @@
                                         "status": {
                                             "type": "string",
                                             "example": "success"
+                                        },
+                                        "user": {
+                                            "type": "user",
+                                            "example": "Unauthorized. Either email or password is wrong."
+                                        },
+                                        "authorization": {
+                                            "type": "authorization",
+                                            "example": "Unauthorized. Either email or password is wrong."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized. Either email or password is wrong."
                                         }
                                     },
                                     "type": "object"
@@ -220,26 +244,6 @@
                     },
                     "default": {
                         "description": "Ha ocurrido un error."
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "responses": {
-            "401": {
-                "description": "Wrong credentials response",
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "properties": {
-                                "error": {
-                                    "type": "string",
-                                    "example": "Unauthorized. Either email or password is wrong."
-                                }
-                            },
-                            "type": "object"
-                        }
                     }
                 }
             }
