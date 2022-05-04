@@ -107,9 +107,7 @@ class AuthController extends Controller
      *    response=200,
      *    description="Good credentials response",
      *    @OA\JsonContent(
-     *       @OA\Property(property="access_token", type="token", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U"),
-     *       @OA\Property(property="token_type", type="string", example="bearer"),
-     *       @OA\Property(property="expires_in", type="integer", example="3600"),
+     *       @OA\Property(property="message", type="string", example="User successfully registered"),
      *       @OA\Property(property="user", type="user", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
      *     )
      * ),
@@ -146,7 +144,22 @@ class AuthController extends Controller
             'user' => $user,
         ]);
     }
-
+    /**
+     * @OA\Post(
+     * path="/api/logout",
+     * summary="Logout",
+     * description="Logout",
+     * security={{"bearer_token":{}}},
+     * tags={"Authentication"},
+     * * @OA\Response(
+     *    response=200,
+     *    description="User correctly logged out",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="User successfully signed out"),
+     *     )
+     * ),
+     * )
+     */
     public function logout()
     {
         Auth::logout();
@@ -157,6 +170,23 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     * path="/api/me",
+     * summary="Me",
+     * description="Info of the logged in user",
+     * tags={"Authentication"},
+     * security={{"bearer_token":{}}},
+     * @OA\Response(
+     *    response=200,
+     *    description="User information",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="user", type="user", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
+     *     )
+     * ),
+     * )
+     */
+
     public function me()
     {
         return response()->json([
@@ -165,6 +195,34 @@ class AuthController extends Controller
             Auth::user(),
         ]);
     }
+
+    /**
+     * @OA\Post(
+     * path="/api/refresh",
+     * summary="Sign in",
+     * description="Login by email, password",
+     * security={{"bearer_token":{}}},
+     * tags={"Authentication"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Good credentials",
+     *     @OA\JsonContent(
+     *       @OA\Property(property="access_token", type="token", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U"),
+     *       @OA\Property(property="token_type", type="string", example="bearer"),
+     *       @OA\Property(property="expires_in", type="integer", example="3600"),
+     *       @OA\Property(property="user", type="user", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
+     *        )
+     *     )
+     * )
+     * )
+     */
 
     public function refresh()
     {

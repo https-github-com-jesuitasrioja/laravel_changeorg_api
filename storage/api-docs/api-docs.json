@@ -154,17 +154,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "access_token": {
-                                            "type": "token",
-                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U"
-                                        },
-                                        "token_type": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "bearer"
-                                        },
-                                        "expires_in": {
-                                            "type": "integer",
-                                            "example": "3600"
+                                            "example": "User successfully registered"
                                         },
                                         "user": {
                                             "type": "user",
@@ -202,6 +194,151 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout",
+                "description": "Logout",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "User correctly logged out",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully signed out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Me",
+                "description": "Info of the logged in user",
+                "operationId": "9d9bc556f927575aa492a88c28fe5908",
+                "responses": {
+                    "200": {
+                        "description": "User information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "user",
+                                            "example": {
+                                                "user": {
+                                                    "id": 1,
+                                                    "name": "ilarra",
+                                                    "email": "ilarra@gmail.com",
+                                                    "email_verified_at": null,
+                                                    "created_at": "2022-05-03T07:45:52.000000Z",
+                                                    "updated_at": "2022-05-03T07:45:52.000000Z"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/refresh": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Sign in",
+                "description": "Login by email, password",
+                "operationId": "2c27d311a2876560fcb5a754b556cdc5",
+                "responses": {
+                    "200": {
+                        "description": "Good credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "token",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": "3600"
+                                        },
+                                        "user": {
+                                            "type": "user",
+                                            "example": {
+                                                "user": {
+                                                    "id": 1,
+                                                    "name": "ilarra",
+                                                    "email": "ilarra@gmail.com",
+                                                    "email_verified_at": null,
+                                                    "created_at": "2022-05-03T07:45:52.000000Z",
+                                                    "updated_at": "2022-05-03T07:45:52.000000Z"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized. Either email or password is wrong."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
             }
         },
         "/api/peticiones": {
