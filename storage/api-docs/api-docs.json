@@ -968,7 +968,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "": {
+                                        "peticiones": {
                                             "type": "array",
                                             "items": {
                                                 "properties": {
@@ -1050,7 +1050,7 @@
                                             ]
                                         }
                                     },
-                                    "type": "object"
+                                    "type": "string"
                                 }
                             }
                         }

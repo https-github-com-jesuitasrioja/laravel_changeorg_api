@@ -17,8 +17,9 @@ class UsersController extends Controller
      *        response="200",
      *        description="Successful response",
      *          @OA\JsonContent(
-     *             type="object",
+     *             type="string",
      *             @OA\Property(
+     *                property="peticiones",
      *                type="array",
      *                example={{"id":1,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:11.000000Z","updated_at":"2022-05-03T07:50:31.000000Z"},{"id":11,"titulo":"lalala2","descripcion":"lalala2","destinatario":"lalala2","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:22.000000Z","updated_at":"2022-05-03T07:47:22.000000Z"},{"id":21,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T08:06:02.000000Z","updated_at":"2022-05-03T08:06:02.000000Z"}},
      *                @OA\Items(
