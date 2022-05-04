@@ -59,6 +59,10 @@
                                     "properties": {
                                         "status": {
                                             "type": "string",
+                                            "example": "success"
+                                        },
+                                        "user": {
+                                            "type": "user",
                                             "example": {
                                                 "user": {
                                                     "id": 1,
@@ -69,10 +73,6 @@
                                                     "updated_at": "2022-05-03T07:45:52.000000Z"
                                                 }
                                             }
-                                        },
-                                        "user": {
-                                            "type": "user",
-                                            "example": "Unauthorized. Either email or password is wrong."
                                         },
                                         "authorization": {
                                             "type": "authorization",
