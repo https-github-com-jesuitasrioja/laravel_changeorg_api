@@ -48,6 +48,11 @@ class AuthController extends Controller
      *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
      *        )
      *     )
+     * ),
+     * @OA\Response(
+     *    response=400,
+     *    description="Invalid request",
+     *    @OA\JsonContent()
      * )
      */
 
@@ -58,7 +63,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response()->json($validator->errors(), 400);
         }
         // $request->validate();
         $credentials = $request->only('email', 'password');
@@ -109,7 +114,7 @@ class AuthController extends Controller
      *     )
      * ),
      * @OA\Response(
-     *    response=401,
+     *    response=400,
      *    description="Wrong credentials response",
      *    @OA\JsonContent(
      *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
