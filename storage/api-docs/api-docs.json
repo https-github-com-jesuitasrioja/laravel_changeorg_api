@@ -346,25 +346,101 @@
                 "tags": [
                     "Peticiones"
                 ],
-                "summary": "Get list of peticiones",
-                "description": "Returns list of petiiones",
+                "summary": "Devuelve las peticiones",
                 "operationId": "b91666912c965c676b40d2d7d767954b",
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#Peticiones"
+                                    "properties": {
+                                        "peticiones": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": ""
+                                                    },
+                                                    "titulo": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "descripcion": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "destinatario": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "firmantes": {
+                                                        "type": "number",
+                                                        "example": ""
+                                                    },
+                                                    "estado": {
+                                                        "type": "string",
+                                                        "example": ""
+                                                    },
+                                                    "user_id": {
+                                                        "type": "number",
+                                                        "example": ""
+                                                    },
+                                                    "categoria_id": {
+                                                        "type": "number",
+                                                        "example": ""
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "example": [
+                                                {
+                                                    "id": 1,
+                                                    "titulo": "lalala3",
+                                                    "descripcion": "lalala3",
+                                                    "destinatario": "lalala3",
+                                                    "firmantes": 0,
+                                                    "estado": "pendiente",
+                                                    "user_id": 1,
+                                                    "categoria_id": 1,
+                                                    "image": null,
+                                                    "created_at": "2022-05-03T07:47:11.000000Z",
+                                                    "updated_at": "2022-05-03T07:50:31.000000Z"
+                                                },
+                                                {
+                                                    "id": 11,
+                                                    "titulo": "lalala2",
+                                                    "descripcion": "lalala2",
+                                                    "destinatario": "lalala2",
+                                                    "firmantes": 0,
+                                                    "estado": "pendiente",
+                                                    "user_id": 1,
+                                                    "categoria_id": 1,
+                                                    "image": null,
+                                                    "created_at": "2022-05-03T07:47:22.000000Z",
+                                                    "updated_at": "2022-05-03T07:47:22.000000Z"
+                                                },
+                                                {
+                                                    "id": 21,
+                                                    "titulo": "lalala3",
+                                                    "descripcion": "lalala3",
+                                                    "destinatario": "lalala3",
+                                                    "firmantes": 0,
+                                                    "estado": "pendiente",
+                                                    "user_id": 1,
+                                                    "categoria_id": 1,
+                                                    "image": null,
+                                                    "created_at": "2022-05-03T08:06:02.000000Z",
+                                                    "updated_at": "2022-05-03T08:06:02.000000Z"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 }
             }
