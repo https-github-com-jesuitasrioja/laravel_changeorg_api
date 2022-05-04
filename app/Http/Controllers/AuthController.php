@@ -26,7 +26,7 @@ class AuthController extends Controller
      *    description="Pass user credentials",
      *    @OA\JsonContent(
      *       required={"email","password"},
-     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *       @OA\Property(property="email", type="string", format="email", example="user1@gmail.com"),
      *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *    ),
      * ),
@@ -77,6 +77,41 @@ class AuthController extends Controller
         ]);
 
     }
+
+    /**
+     * @OA\Post(
+     * path="/api/register",
+     * summary="Sign up",
+     * description="Regist by name, email, password",
+     * tags={"Authentication"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Pass new user credentials",
+     *    @OA\JsonContent(
+     *       required={"name","email","password"},
+     *       @OA\Property(property="name", type="string", example="user1"),
+     *       @OA\Property(property="email", type="string", format="email", example="user1@gmail.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Good credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="status", type="string", example="success"),
+     *       @OA\Property(property="user", type="user", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
+     *       @OA\Property(property="authorization", type="authorization", example={"authorisation": {"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U","type": "bearer"}})
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized. Either email or password is wrong.")
+     *        )
+     *     )
+     * )
+     */
 
     public function register(Request $request)
     {
