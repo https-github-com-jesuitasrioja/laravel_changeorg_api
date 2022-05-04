@@ -1050,7 +1050,7 @@
                                             ]
                                         }
                                     },
-                                    "type": "string"
+                                    "type": "object"
                                 }
                             }
                         }

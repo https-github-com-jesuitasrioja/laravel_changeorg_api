@@ -17,7 +17,7 @@ class UsersController extends Controller
      *        response="200",
      *        description="Successful response",
      *          @OA\JsonContent(
-     *             type="string",
+     *             type="object",
      *             @OA\Property(
      *                property="peticiones",
      *                type="array",
