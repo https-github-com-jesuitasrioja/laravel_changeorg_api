@@ -483,6 +483,39 @@ return view('peticiones.edit-add', compact('peticion'));
 
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/peticiones/{id}",
+     *     tags={"Peticiones"},
+     *     summary="Servicio para firmar peticiones",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Peticione id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *    response=200,
+     *    description="Signed correctly",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Peticion eliminada satisfactioriamente"),
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=500,
+     *    description="Could not be signed",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Error eliminando la peticion")
+     *        )
+     *     )
+     * )
+     *     )
+     * )
+     */
+
     public function destroy(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);

@@ -792,6 +792,58 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "Peticiones"
+                ],
+                "summary": "Servicio para firmar peticiones",
+                "operationId": "1f564d0c1d204713e5434d61a3c39558",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Peticione id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Signed correctly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Peticion eliminada satisfactioriamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Could not be signed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error eliminando la peticion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/peticiones/firmar/{id}": {
