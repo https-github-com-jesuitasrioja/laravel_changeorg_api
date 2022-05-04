@@ -179,7 +179,7 @@ class PeticionesController extends Controller
      *              type="integer"
      *          )
      *      ),
-     *     *      @OA\Response(
+     *     @OA\Response(
      *        response="200",
      *        description="Successful response",
      *          @OA\JsonContent(
@@ -187,7 +187,7 @@ class PeticionesController extends Controller
      *             @OA\Property(
      *                property="peticion",
      *                type="array",
-     *                example={{"id":1,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:11.000000Z","updated_at":"2022-05-03T07:50:31.000000Z"},{"id":11,"titulo":"lalala2","descripcion":"lalala2","destinatario":"lalala2","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:22.000000Z","updated_at":"2022-05-03T07:47:22.000000Z"},{"id":21,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T08:06:02.000000Z","updated_at":"2022-05-03T08:06:02.000000Z"}},
+     *                example={{"id":1,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:11.000000Z","updated_at":"2022-05-03T07:50:31.000000Z"}},
      *                @OA\Items(
      *                      @OA\Property(
      *                         property="id",
@@ -259,48 +259,36 @@ return view('peticiones.edit-add', compact('peticion'));
 }*/
 /**
  * @OA\Put(
- *      path="/api/peticiones/{id}",
- *      tags={"Peticiones"},
- *      summary="Update existing peticione",
- *      description="Returns updated peticione data",
- *      @OA\Parameter(
- *          name="id",
- *          description="Peticione id",
- *          required=true,
- *          in="path",
- *          @OA\Schema(
- *              type="integer"
- *          )
- *      ),
- *      @OA\RequestBody(
- *          required=true,
- *          @OA\JsonContent(
- *              ref="#Peticione")
- *      ),
- *      @OA\Response(
- *          response=201,
- *          description="Successful operation",
- *          @OA\JsonContent(ref="#Peticione")
- *       ),
- *      @OA\Response(
- *          response=400,
- *          description="Bad Request"
- *      ),
- *      @OA\Response(
- *          response=401,
- *          description="Unauthenticated",
- *      ),
- *      @OA\Response(
- *          response=403,
- *          description="Forbidden"
- *      ),
- *      @OA\Response(
- *          response=404,
- *          description="Resource Not Found"
- *      )
+ * path="/api/peticiones",
+ * summary="Actualizar una peticion",
+ * description="Actualizar una  peticion",
+ * tags={"Peticiones"},
+ * @OA\RequestBody(
+ *    required=true,
+ *    description="Parámetros de la petición",
+ *    @OA\JsonContent(
+ *       required={"titulo","descripcion","destinatario"},
+ *       @OA\Property(property="titulo", type="string", example="ejemplo1"),
+ *       @OA\Property(property="descripcion", type="string", example="ejemplo1"),
+ *       @OA\Property(property="destinatario", type="string", example="ejemplo1"),
+ *    ),
+ * ),
+ * @OA\Response(
+ *    response=200,
+ *    description="Updated correctly",
+ *    @OA\JsonContent(
+ *       @OA\Property(property="message", type="string", example="Peticion actualizada satisfactioriamente"),
+ *     )
+ * ),
+ * @OA\Response(
+ *    response=400,
+ *    description="Could not be updated",
+ *    @OA\JsonContent(
+ *       @OA\Property(property="error", type="string", example="Error actualizando la peticion")
+ *        )
+ *     )
  * )
  */
-
     public function update(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);
@@ -316,6 +304,38 @@ return view('peticiones.edit-add', compact('peticion'));
 
     }
 
+    /**
+     * @OA\Post(
+     * path="/api/peticiones",
+     * summary="Anadir una nueva peticion",
+     * description="Añadir una nueva peticion",
+     * tags={"Peticiones"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Parámetros de la petición",
+     *    @OA\JsonContent(
+     *       required={"titulo","descripcion","destinatario"},
+     *       @OA\Property(property="titulo", type="string", example="ejemplo1"),
+     *       @OA\Property(property="descripcion", type="string", example="ejemplo1"),
+     *       @OA\Property(property="destinatario", type="string", example="ejemplo1"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Added correctly",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Peticion creada satisfactioriamente"),
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=400,
+     *    description="Could not be added",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Error creando la peticion")
+     *        )
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
 
