@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -30,13 +31,14 @@ class AuthController extends Controller
      *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
      *    ),
      * ),
-     * @OA\Response(
+     *    @OA\Response(
      *    response=200,
-     *    description="Good credentials response",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="status", type="string", example="success"),
+     *    description="Good credentials",
+     *     @OA\JsonContent(
+     *       @OA\Property(property="access_token", type="token", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U"),
+     *       @OA\Property(property="token_type", type="string", example="bearer"),
+     *       @OA\Property(property="expires_in", type="integer", example="3600"),
      *       @OA\Property(property="user", type="user", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
-     *       @OA\Property(property="authorization", type="authorization", example={"authorisation": {"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U","type": "bearer"}})
      *     )
      * ),
      * @OA\Response(
@@ -51,10 +53,14 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        // $request->validate();
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
@@ -68,12 +74,10 @@ class AuthController extends Controller
 
         $user = Auth::user();
         return response()->json([
-            'status' => 'success',
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => env('JWT_TTL') * 60, //auth()->factory()->getTTL() * 60,
             'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ],
         ]);
 
     }
@@ -98,9 +102,10 @@ class AuthController extends Controller
      *    response=200,
      *    description="Good credentials response",
      *    @OA\JsonContent(
-     *       @OA\Property(property="status", type="string", example="success"),
+     *       @OA\Property(property="access_token", type="token", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U"),
+     *       @OA\Property(property="token_type", type="string", example="bearer"),
+     *       @OA\Property(property="expires_in", type="integer", example="3600"),
      *       @OA\Property(property="user", type="user", example={"user": {"id": 1,"name": "ilarra","email": "ilarra@gmail.com", "email_verified_at": null,"created_at": "2022-05-03T07:45:52.000000Z","updated_at": "2022-05-03T07:45:52.000000Z"}}),
-     *       @OA\Property(property="authorization", type="authorization", example={"authorisation": {"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2xhcmF2ZWwtY2hhbmdlb3JnLWFwaS5oZXJva3VhcHAuY29tL2FwaS9sb2dpbiIsImlhdCI6MTY1MTU2NTE0MCwiZXhwIjoxNjUxNTY4NzQwLCJuYmYiOjE2NTE1NjUxNDAsImp0aSI6Ik1RdlBhdG1JTXZ3N29pbUkiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.GGsbe1V4CLxBCeKDuRb-t01T1-3Ak4DF_NIJqc3Ir8U","type": "bearer"}})
      *     )
      * ),
      * @OA\Response(
@@ -115,11 +120,14 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -127,11 +135,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $token = Auth::login($user);
+        //$token = Auth::login($user);
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            // 'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'message' => "User successfully registered",
             'user' => $user,
         ]);
     }
@@ -167,7 +173,7 @@ class AuthController extends Controller
             ],*/
             'access_token' => Auth::refresh(),
             'token_type' => 'bearer',
-            //   'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'expires_in' => env('JWT_TTL') * 60,
             'user' => $user,
         ]);
     }
