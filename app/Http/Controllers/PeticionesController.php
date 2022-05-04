@@ -381,6 +381,39 @@ return view('peticiones.edit-add', compact('peticion'));
 
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/peticiones/firmar/{id}",
+     *     tags={"Peticiones"},
+     *     summary="Servicio para firmar peticiones",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Peticione id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *    response=200,
+     *    description="Signed correctly",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Peticion firmada satisfactioriamente"),
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=500,
+     *    description="Could not be signed",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="La petición no se ha podido firmar")
+     *        )
+     *     )
+     * )
+     *     )
+     * )
+     */
+
     public function firmar(Request $request, $id)
     {
         try {
@@ -402,6 +435,39 @@ return view('peticiones.edit-add', compact('peticion'));
         return response()->json(['message' => 'La petición no se ha podido firmar'], 500);
 
     }
+
+    /**
+     * @OA\Put(
+     *     path="/api/peticiones/estado/{id}",
+     *     tags={"Peticiones"},
+     *     summary="Servicio para firmar peticiones",
+     *     @OA\Parameter(
+     *          name="id",
+     *          description="Peticione id",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *     @OA\Response(
+     *    response=200,
+     *    description="Signed correctly",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Peticion actualizada satisfactioriamente"),
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=500,
+     *    description="Could not be signed",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Error actualizando la peticion")
+     *        )
+     *     )
+     * )
+     *     )
+     * )
+     */
 
     public function cambiarEstado(Request $request, $id)
     {

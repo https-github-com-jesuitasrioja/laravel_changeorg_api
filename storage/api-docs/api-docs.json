@@ -794,6 +794,114 @@
                 }
             }
         },
+        "/api/peticiones/firmar/{id}": {
+            "put": {
+                "tags": [
+                    "Peticiones"
+                ],
+                "summary": "Servicio para firmar peticiones",
+                "operationId": "e99c18a119328981991bf07266a7f600",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Peticione id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Signed correctly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Peticion firmada satisfactioriamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Could not be signed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "La petición no se ha podido firmar"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/peticiones/estado/{id}": {
+            "put": {
+                "tags": [
+                    "Peticiones"
+                ],
+                "summary": "Servicio para firmar peticiones",
+                "operationId": "1f963fb1f3a024399a63330bb4f63746",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Peticione id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Signed correctly",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Peticion actualizada satisfactioriamente"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Could not be signed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error actualizando la peticion"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/firmas": {
             "get": {
                 "tags": [
