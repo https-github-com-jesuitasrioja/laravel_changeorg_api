@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\File;
 use App\Models\Peticione;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PeticionesController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show', 'list']]);
     }
     /**
      * @OA\GET(
@@ -82,6 +85,74 @@ class PeticionesController extends Controller
 
         $peticiones = Peticione::all();
 
+        return $peticiones;
+    }
+
+    /**
+     * @OA\GET(
+     *     path="/api/peticiones/list",
+     *     summary="Devuelve las peticiones paginadas",
+     *     tags={"Peticiones"},
+     *     @OA\Response(
+     *        response="200",
+     *        description="Successful response",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                property="peticiones",
+     *                type="array",
+     *                example={{"id":1,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:11.000000Z","updated_at":"2022-05-03T07:50:31.000000Z"},{"id":11,"titulo":"lalala2","descripcion":"lalala2","destinatario":"lalala2","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T07:47:22.000000Z","updated_at":"2022-05-03T07:47:22.000000Z"},{"id":21,"titulo":"lalala3","descripcion":"lalala3","destinatario":"lalala3","firmantes":0,"estado":"pendiente","user_id":1,"categoria_id":1,"image":null,"created_at":"2022-05-03T08:06:02.000000Z","updated_at":"2022-05-03T08:06:02.000000Z"}},
+     *                @OA\Items(
+     *                      @OA\Property(
+     *                         property="id",
+     *                         type="number",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="titulo",
+     *                         type="string",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="descripcion",
+     *                         type="string",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="destinatario",
+     *                         type="string",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="firmantes",
+     *                         type="number",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="estado",
+     *                         type="string",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="user_id",
+     *                         type="number",
+     *                         example=""
+     *                      ),
+     *                      @OA\Property(
+     *                         property="categoria_id",
+     *                         type="number",
+     *                         example=""
+     *                      ),
+     *                ),
+     *             ),
+     *        ),
+     *     ),
+     * )
+     */
+
+    function list(Request $request) {
+
+        $peticiones = Peticione::jsonPaginate();
         return $peticiones;
     }
 
@@ -313,7 +384,7 @@ return view('peticiones.edit-add', compact('peticion'));
      * @OA\RequestBody(
      *    required=true,
      *    description="Parámetros de la petición",
-     *    @OA\JsonContent(
+     *    @OA\RequestPara(
      *       required={"titulo","descripcion","destinatario"},
      *       @OA\Property(property="titulo", type="string", example="ejemplo1"),
      *       @OA\Property(property="descripcion", type="string", example="ejemplo1"),
@@ -338,28 +409,30 @@ return view('peticiones.edit-add', compact('peticion'));
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),
+            [
+                'titulo' => 'required|max:255',
+                'descripcion' => 'required',
+                'destinatario' => 'required',
+                'categoria_id' => 'required',
+                //'file' => 'required',
+            ]);
 
-        $this->validate($request, [
-            'titulo' => 'required|max:255',
-            'descripcion' => 'required',
-            'destinatario' => 'required',
-            //'file' => 'required',
-        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+        $validator = Validator::make($request->all(),
+            [
+                'file' => 'required|mimes:png,jpg|max:4096',
+            ]);
 
-        //$input = $request->all();
-        //$input = json_decode($request, true);
-
-        //$input = $request;
-        if ($file = $request->file('file')) {
-            $name = $file->getClientOriginalName();
-            $file->move('images', $name);
-            $input['image'] = $name;
-
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
         }
 
         $category = Categoria::findOrFail($request->input('categoria_id'));
         $user = Auth::user(); //asociarlo al usuario authenticado
-        $user = User::findOrFail($request->input('user_id'));
+        $user = User::findOrFail($user->id);
 
         $peticion = new Peticione();
         $peticion->titulo = $request->input('titulo');
@@ -371,14 +444,42 @@ return view('peticiones.edit-add', compact('peticion'));
 
         $peticion->firmantes = 0;
         $peticion->estado = 'pendiente';
-        //$peticion->save();
         $res = $peticion->save();
 
         if ($res) {
-            return response()->json(['message' => 'Peticion creada satisfactioriamente', 'peticion' => $peticion], 201);
+            $res_file = $this->fileUpload($request, $peticion->id);
+            if ($res_file == 0) {
+                return response()->json(['message' => 'Peticion creada satisfactioriamente', 'peticion' => $peticion], 201);
+            }
+            return response()->json(['message' => 'Error creando la peticion'], 500);
         }
         return response()->json(['message' => 'Error creando la peticion'], 500);
 
+    }
+
+    public function fileUpload(Request $req, $peticione_id = null)
+    {
+        $file = $req->file('file');
+        $fileModel = new File;
+        $fileModel->peticione_id = $peticione_id;
+        if ($req->file('file')) {
+            //return $req->file('file');
+
+            $filename = $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move('images', $filename);
+
+            //$filePath = $req->file('file')->storeAs('images/peticiones', $fileName, 'local');
+            //return $filePath;
+            $fileModel->name = $filename;
+            $fileModel->file_path = '/public/images/' . $filename;
+            $res = $fileModel->save();
+            return $fileModel;
+            if ($res) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
     }
 
     /**
@@ -419,20 +520,24 @@ return view('peticiones.edit-add', compact('peticion'));
         try {
             $peticion = Peticione::findOrFail($id);
             $user = Auth::user();
-            //$user = 2;
-            //$user_id = [$user['id']];
+            $firmas = $peticion->firmas;
+            foreach ($firmas as $firma) {
+                if ($firma->id == $user->id) {
+                    return response()->json(['message' => 'Ya has firmado esta petición'], 403);
+                }
+            }
+            //Compraobar si ya ha firmado
             $user_id = [$user->id];
             $peticion->firmas()->attach($user_id);
+            $peticion->firmantes = $peticion->firmantes + 1;
+            $peticion->save();
 
         } catch (\Throwable$th) {
             return response()->json(['message' => 'La petición no se ha podido firmar'], 500);
 
         }
 
-        if ($peticion->firmas()) {
-            return response()->json(['message' => 'Peticion firmada satisfactioriamente', 'peticion' => $peticion], 201);
-        }
-        return response()->json(['message' => 'La petición no se ha podido firmar'], 500);
+        return response()->json(['message' => 'Peticion firmada satisfactioriamente', 'peticion' => $peticion], 201);
 
     }
 
@@ -519,6 +624,7 @@ return view('peticiones.edit-add', compact('peticion'));
     public function destroy(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);
+        Storage::delete($peticion->files);
         $res = $peticion->delete();
 
         if ($res) {

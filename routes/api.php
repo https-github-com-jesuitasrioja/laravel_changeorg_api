@@ -12,8 +12,11 @@ Route::controller(AuthController::class)->group(function () {
 
 });
 
-Route::resource('peticiones', \App\Http\Controllers\PeticionesController::class);
+Route::get('/peticiones/listado', [\App\Http\Controllers\PeticionesController::class, 'list']);
+
 Route::get('/peticiones/firmar/{id}', [\App\Http\Controllers\PeticionesController::class, 'firmar']);
 Route::put('/peticiones/estado/{id}', [\App\Http\Controllers\PeticionesController::class, 'cambiarEstado']);
 Route::get('/mispeticiones/', [\App\Http\Controllers\PeticionesController::class, 'listMine']);
 Route::get('/users/firmas', [\App\Http\Controllers\UsersController::class, 'peticionesFirmadas']);
+
+Route::resource('peticiones', \App\Http\Controllers\PeticionesController::class);

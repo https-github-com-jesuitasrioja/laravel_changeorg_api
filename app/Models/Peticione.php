@@ -25,4 +25,8 @@ class Peticione extends Model
         return $this->belongsToMany(User::class, 'peticione_user');
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }

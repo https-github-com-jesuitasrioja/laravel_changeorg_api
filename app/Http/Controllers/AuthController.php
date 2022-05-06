@@ -189,11 +189,11 @@ class AuthController extends Controller
 
     public function me()
     {
-        return response()->json([
+        return response()->json(
             /*'status' => 'success',
             'user' => Auth::user(),*/
             Auth::user(),
-        ]);
+        );
     }
 
     /**
