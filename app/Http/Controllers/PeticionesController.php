@@ -363,6 +363,9 @@ return view('peticiones.edit-add', compact('peticion'));
     public function update(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);
+        if ($request->user()->cannot('update', $peticion)) {
+            return response()->json(['message' => 'No estás autorizado para realizar esta acción'], 403);
+        }
         //$peticion->update($request->all());
         $res = $peticion->update($request->all());
 
@@ -577,6 +580,9 @@ return view('peticiones.edit-add', compact('peticion'));
     public function cambiarEstado(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);
+        if ($request->user()->cannot('cambiarEstado', $peticion)) {
+            return response()->json(['message' => 'No estás autorizado para realizar esta acción'], 403);
+        }
         $peticion->estado = 'aceptada';
         $res = $peticion->save();
         if ($res) {
@@ -624,6 +630,9 @@ return view('peticiones.edit-add', compact('peticion'));
     public function destroy(Request $request, $id)
     {
         $peticion = Peticione::findOrFail($id);
+        if ($request->user()->cannot('delete', $peticion)) {
+            return response()->json(['message' => 'No estás autorizado para realizar esta acción'], 403);
+        }
         Storage::delete($peticion->files);
         $res = $peticion->delete();
 
