@@ -21,7 +21,7 @@ Route::get('/users/firmas', [\App\Http\Controllers\UsersController::class, 'peti
 
 Route::post('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'salvar']);
 Route::get('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'index']);
-Route::delete('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'destroy']);
+Route::delete('/peticiones/{id}', [\App\Http\Controllers\PeticionesController::class, 'destroy']);
 
 
 //Route::resource('peticiones', \App\Http\Controllers\PeticionesController::class);
