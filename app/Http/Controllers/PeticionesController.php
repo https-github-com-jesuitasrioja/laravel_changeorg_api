@@ -700,7 +700,6 @@ return view('peticiones.edit-add', compact('peticion'));
 
     public function destroy(Request $request, $id)
     {
-        return $id;
         $peticion = Peticione::findOrFail($id);
         if ($request->user()->cannot('delete', $peticion)) {
             return response()->json(['message' => 'No estás autorizado para realizar esta acción'], 403);
