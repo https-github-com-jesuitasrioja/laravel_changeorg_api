@@ -19,4 +19,9 @@ Route::put('/peticiones/estado/{id}', [\App\Http\Controllers\PeticionesControlle
 Route::get('/mispeticiones/', [\App\Http\Controllers\PeticionesController::class, 'listMine']);
 Route::get('/users/firmas', [\App\Http\Controllers\UsersController::class, 'peticionesFirmadas']);
 
-Route::resource('peticiones', \App\Http\Controllers\PeticionesController::class);
+Route::post('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'salvar']);
+Route::get('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'index']);
+Route::delete('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'destroy']);
+
+
+//Route::resource('peticiones', \App\Http\Controllers\PeticionesController::class);

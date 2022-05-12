@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('peticione_user', function (Blueprint $table) {
             $table->id();
             $table->integer('peticione_id');
+            //            $table->foreignId('user_id');
             $table->integer('user_id');
             $table->timestamps();
 

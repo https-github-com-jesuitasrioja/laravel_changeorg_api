@@ -1,0 +1,14 @@
+<students>
+    <student>
+        <name>John</name> <age>23</age> <city>Agra</city>
+    </student>
+    <student>
+        <name>Steve</name> <age>28</age> <city>Delhi</city>
+    </student>
+    <student>
+        <name>Peter</name> <age>32</age> <city>Chennai</city>
+    </student>
+    <student>
+        <name>Chaitanya</name> <age>28</age> <city>Bangalore</city>
+    </student>
+</students>

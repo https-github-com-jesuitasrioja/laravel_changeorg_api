@@ -410,6 +410,77 @@ return view('peticiones.edit-add', compact('peticion'));
      *     )
      * )
      */
+    public function salvar(Request $request)
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'titulo' => 'required|max:255',
+                'descripcion' => 'required',
+                'destinatario' => 'required',
+                'categoria_id' => 'required',
+                //'file' => 'required',
+            ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $category = Categoria::findOrFail($request->input('categoria_id'));
+        $user = Auth::user(); //asociarlo al usuario authenticado
+        $user = User::findOrFail($user->id);
+
+        $peticion = new Peticione();
+        $peticion->titulo = $request->input('titulo');
+        $peticion->descripcion = $request->input('descripcion');
+        $peticion->destinatario = $request->input('destinatario');
+
+        $peticion->user()->associate($user);
+        $peticion->categoria()->associate($category);
+
+        $peticion->firmantes = 0;
+        $peticion->estado = 'pendiente';
+        $res = $peticion->save();
+
+        if ($res) {
+
+                return response()->json(['message' => 'Peticion creada satisfactioriamente', 'peticion' => $peticion], 201);
+        }
+        return response()->json(['message' => 'Error creando la peticion'], 500);
+
+    }
+
+    /**
+     * @OA\Post(
+     * path="/api/peticiones",
+     * summary="Anadir una nueva peticion",
+     * description="Añadir una nueva peticion",
+     * tags={"Peticiones"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Parámetros de la petición",
+     *    @OA\RequestPara(
+     *       required={"titulo","descripcion","destinatario"},
+     *       @OA\Property(property="titulo", type="string", example="ejemplo1"),
+     *       @OA\Property(property="descripcion", type="string", example="ejemplo1"),
+     *       @OA\Property(property="destinatario", type="string", example="ejemplo1"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Added correctly",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Peticion creada satisfactioriamente"),
+     *     )
+     * ),
+     * @OA\Response(
+     *    response=400,
+     *    description="Could not be added",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Error creando la peticion")
+     *        )
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),
@@ -451,7 +522,7 @@ return view('peticiones.edit-add', compact('peticion'));
 
         if ($res) {
             $res_file = $this->fileUpload($request, $peticion->id);
-            if ($res_file == 0) {
+            if ($res_file) {
                 return response()->json(['message' => 'Peticion creada satisfactioriamente', 'peticion' => $peticion], 201);
             }
             return response()->json(['message' => 'Error creando la peticion'], 500);
@@ -483,6 +554,7 @@ return view('peticiones.edit-add', compact('peticion'));
                 return 1;
             }
         }
+        return 1;
     }
 
     /**
@@ -529,7 +601,6 @@ return view('peticiones.edit-add', compact('peticion'));
                     return response()->json(['message' => 'Ya has firmado esta petición'], 403);
                 }
             }
-            //Compraobar si ya ha firmado
             $user_id = [$user->id];
             $peticion->firmas()->attach($user_id);
             $peticion->firmantes = $peticion->firmantes + 1;

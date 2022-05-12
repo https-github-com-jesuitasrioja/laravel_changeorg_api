@@ -12,7 +12,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('files', function ($table) {$table->foreign('peticione_id')->references('id')->on('peticiones')->onDelete('cascade');});
+        Schema::table('files', function ($table) {
+            $table->foreign('peticione_id')->references('id')->on('peticiones')->onDelete('cascade');});
 
     }
 
