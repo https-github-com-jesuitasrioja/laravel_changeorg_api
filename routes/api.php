@@ -23,6 +23,7 @@ Route::post('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 
 Route::get('/peticiones/', [\App\Http\Controllers\PeticionesController::class, 'index']);
 Route::delete('/peticiones/{id}', [\App\Http\Controllers\PeticionesController::class, 'destroy']);
 Route::get('/peticiones/{id}', [\App\Http\Controllers\PeticionesController::class, 'show']);
+Route::put('/peticiones/{id}', [\App\Http\Controllers\PeticionesController::class, 'update']);
 
 
 //Route::resource('peticiones', \App\Http\Controllers\PeticionesController::class);
