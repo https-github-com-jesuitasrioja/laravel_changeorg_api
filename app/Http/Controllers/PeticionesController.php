@@ -233,6 +233,7 @@ class PeticionesController extends Controller
         $user = Auth::user();
         //$id = 2;
         $peticiones = Peticione::all()->where('user_id', $user->id);
+
         return $peticiones;
     }
 
@@ -443,7 +444,7 @@ return view('peticiones.edit-add', compact('peticion'));
 
         if ($res) {
 
-                return response()->json(['message' => 'Peticion creada satisfactioriamente', 'peticion' => $peticion], 201);
+            return response()->json(['message' => 'Peticion creada satisfactioriamente', 'peticion' => $peticion], 201);
         }
         return response()->json(['message' => 'Error creando la peticion'], 500);
 
