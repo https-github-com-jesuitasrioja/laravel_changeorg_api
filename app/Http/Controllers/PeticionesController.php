@@ -232,7 +232,7 @@ class PeticionesController extends Controller
         // parent::index()
         $user = Auth::user();
         //$id = 2;
-        $peticiones = Peticione::all()->where('user_id', $user->id);
+        $peticiones = Peticione::all(); //->where('user_id', $user->id);
 
         return $peticiones->toJson(JSON_OBJECT_AS_ARRAY);
         //return "[{'kk':'kk'}]"; //$peticiones;
