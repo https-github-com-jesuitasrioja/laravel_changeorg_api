@@ -236,7 +236,7 @@ class PeticionesController extends Controller
 
         // return $peticiones->toJson(JSON_OBJECT_AS_ARRAY);
         //return "[{'kk':'kk'}]"; //$peticiones;
-        $peticiones = Peticione::all();
+        $peticiones = Peticione::where('user_id', $user->id)->get();
 
         return $peticiones;
 
