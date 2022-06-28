@@ -234,7 +234,8 @@ class PeticionesController extends Controller
         //$id = 2;
         $peticiones = Peticione::all()->where('user_id', $user->id);
 
-        return "[{'kk':'kk'}]"; //$peticiones;
+        return $peticiones;
+        //return "[{'kk':'kk'}]"; //$peticiones;
     }
 
     /**
