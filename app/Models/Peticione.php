@@ -10,6 +10,8 @@ class Peticione extends Model
     use HasFactory;
     protected $fillable = ['titulo', 'descripcion', 'destinatario', 'firmantes', 'estado'];
 
+    protected $hidden = ['user_id', 'categoria_id'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
