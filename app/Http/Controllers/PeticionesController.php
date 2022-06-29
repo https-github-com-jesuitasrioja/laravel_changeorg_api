@@ -83,7 +83,7 @@ class PeticionesController extends Controller
     public function index(Request $request)
     {
 
-        $peticiones = Peticione::all();
+        $peticiones = Peticione::all()->load(['user', 'categoria']);
 
         return $peticiones;
     }
@@ -232,11 +232,11 @@ class PeticionesController extends Controller
         // parent::index()
         $user = Auth::user();
         //$id = 2;
-        $peticiones = Peticione::all(); //->where('user_id', $user->id);
+        //$peticiones = Peticione::all()->load(['user', 'categoria']); //->where('user_id', $user->id);
 
         // return $peticiones->toJson(JSON_OBJECT_AS_ARRAY);
         //return "[{'kk':'kk'}]"; //$peticiones;
-        $peticiones = Peticione::where('user_id', $user->id)->get();
+        $peticiones = Peticione::where('user_id', $user->id)->get()->load(['user', 'categoria']);
 
         return $peticiones;
 
